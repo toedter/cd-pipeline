@@ -1,0 +1,4 @@
+git:3.3.0
+git-client:2.4.6
+workflow-aggregator:2.5
+simple-theme:0.3

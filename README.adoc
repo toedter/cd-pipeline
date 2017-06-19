@@ -1,0 +1,14 @@
+# cd-pipeline
+
+A Continuous Delivere pipeline with Docker and Terraform.
+
+## Acknowledements
+
+Many thanks to
+
+- Marcel Brinkner, see https://github.com/marcelbirkner/docker-ci-tool-stack
+- Rob Morgen, see https://github.com/robmorgan/jenkins2-docker
+
+## License
+
+MIT

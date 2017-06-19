@@ -1,0 +1,47 @@
+version: '2'
+
+networks:
+  cd-tools-network:
+    driver: bridge
+
+services:
+  sonarqube:
+    image: sonarqube:6.4
+    ports:
+      - "9000:9000"
+      - "5432:5432"
+    networks:
+      - cd-tools-network
+    depends_on:
+      - sonardb
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+
+  sonardb:
+    networks:
+      - cd-tools-network
+    image: postgres
+    environment:
+      - POSTGRES_USER=sonar
+      - POSTGRES_PASSWORD=sonar
+    volumes:
+      - /opt/postgres/data:/var/lib/postgresql/data
+
+  jenkins:
+    build: ./jenkins
+    ports:
+      - "8080:8080"
+    networks:
+      - cd-tools-network
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /usr/local/bin/docker:/usr/bin/docker
+      - /opt/jenkins/:/var/lib/jenkins/
+    depends_on:
+      - sonarqube
+    environment:
+      - SONARQUBE_SERVER=http://sonarqube:9000
+
+
