@@ -37,7 +37,7 @@ services:
       - cd-tools-network
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - /usr/local/bin/docker:/usr/bin/docker
+      - /usr/local/bin/docker:/usr/local/bin/docker
       - /opt/jenkins/:/var/lib/jenkins/
     depends_on:
       - sonarqube
