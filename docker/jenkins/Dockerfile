@@ -21,7 +21,7 @@ RUN mv docker/* /usr/bin/
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN xargs /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
 
-USER jenkins
+#USER jenkins
 
 # Adding default Jenkins Jobs
 COPY jobs/1-ms60min-job.xml /usr/share/jenkins/ref/jobs/1-ms60min-job/config.xml
