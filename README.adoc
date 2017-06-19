@@ -1,8 +1,8 @@
 # cd-pipeline
 
-A Continuous Delivere pipeline with Docker and Terraform.
+A Continuous Delivery pipeline with Docker and Terraform.
 
-## Acknowledements
+## Acknowledgements
 
 Many thanks to
 
