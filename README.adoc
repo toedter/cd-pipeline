@@ -11,4 +11,4 @@ Many thanks to
 
 ## License
 
-MIT
+MIT, see http://toedter.mit-license.org
