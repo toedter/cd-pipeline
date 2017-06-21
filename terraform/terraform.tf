@@ -30,6 +30,14 @@ resource "aws_security_group" "cd-pipeline" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
+  # nginx HTTPS access from anywhere
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
   # outbound internet access
   egress {
     from_port   = 0
