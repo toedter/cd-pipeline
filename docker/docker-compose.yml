@@ -44,4 +44,14 @@ services:
     environment:
       - SONARQUBE_SERVER=http://sonarqube:9000
 
+  nginx:
+    build: ./nginx
+    ports:
+      - "443:443"
+    networks:
+      - cd-tools-network
+    depends_on:
+      - jenkins
+      - sonarqube
+
 
