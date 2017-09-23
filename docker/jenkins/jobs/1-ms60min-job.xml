@@ -19,12 +19,12 @@
     <icon class="jenkins.branch.MetadataActionFolderIcon" plugin="branch-api@2.0.10">
         <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
     </icon>
-    <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy" plugin="cloudbees-folder@6.0.4">
-        <pruneDeadBranches>true</pruneDeadBranches>
-        <daysToKeep>0</daysToKeep>
-        <numToKeep>0</numToKeep>
-    </orphanedItemStrategy>
-    <triggers/>
+    <triggers>
+        <com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger>
+            <spec>* * * * *</spec>
+            <interval>60000</interval>
+        </com.cloudbees.hudson.plugins.folder.computed.PeriodicFolderTrigger>
+    </triggers>
     <sources class="jenkins.branch.MultiBranchProject$BranchSourceList" plugin="branch-api@2.0.10">
         <data>
             <jenkins.branch.BranchSource>
@@ -49,4 +49,9 @@
         <owner class="org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject" reference="../.."/>
         <scriptPath>Jenkinsfile</scriptPath>
     </factory>
+   <orphanedItemStrategy class="com.cloudbees.hudson.plugins.folder.computed.DefaultOrphanedItemStrategy">
+        <pruneDeadBranches>true</pruneDeadBranches>
+        <daysToKeep>-1</daysToKeep>
+        <numToKeep>20</numToKeep>
+    </orphanedItemStrategy>
 </org.jenkinsci.plugins.workflow.multibranch.WorkflowMultiBranchProject>

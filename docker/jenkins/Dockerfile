@@ -1,4 +1,4 @@
-FROM jenkins:2.46.3
+FROM jenkins/jenkins
 
 USER root
 RUN apt-get update \
@@ -28,6 +28,16 @@ COPY jobs/1-ms60min-job.xml /usr/share/jenkins/ref/jobs/1-ms60min-job/config.xml
 
 # Jenkins settings
 COPY config.xml /usr/share/jenkins/ref/config.xml
+
+# Create user admin/admin
+COPY basic-security.groovy /usr/share/jenkins/ref/init.groovy.d/basic-security.groovy
+COPY jenkins.install.UpgradeWizard.state /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
+
+# Disable Jenkins CLI
+COPY jenkins.CLI.xml /usr/share/jenkins/ref/jenkins.CLI.xml
+
+# Disable Master/slave security warning
+COPY slave-to-master-security-kill-switch /usr/share/jenkins/ref/secrets/slave-to-master-security-kill-switch
 
 # Material Design Theme
 COPY theme/org.codefirst.SimpleThemeDecorator.xml /usr/share/jenkins/ref/org.codefirst.SimpleThemeDecorator.xml
