@@ -84,8 +84,7 @@ resource "aws_instance" "web" {
       "sudo mv docker-compose /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
       "cd docker",
-      "sudo docker-compose build",
-      "sudo docker-compose up -d",
+      "sudo ./pipeline-create.sh"
     ]
   }
 }

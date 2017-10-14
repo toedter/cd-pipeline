@@ -1,4 +1,4 @@
-version: '2'
+version: '3.2'
 
 networks:
   cd-tools-network:
@@ -6,7 +6,7 @@ networks:
 
 services:
   sonarqube:
-    image: sonarqube:6.4
+    image: sonarqube:latest
     ports:
       - "9000:9000"
       - "5432:5432"
@@ -23,14 +23,37 @@ services:
     networks:
       - cd-tools-network
     image: postgres
+    container_name: sonarqube-db
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
     volumes:
-      - /opt/postgres/data:/var/lib/postgresql/data
+      - /volumes/postgres/data:/var/lib/postgresql/data
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:latest
+    networks:
+      - cd-tools-network
+    container_name: artifactory
+    ports:
+     - 8081:8081
+    environment:
+     - ADMIN_PASSWORD=password
+    volumes:
+     - /volumes/artifactory:/var/opt/jfrog/artifactory
+#    Add extra Java options by uncommenting the following lines
+#    environment:
+#     - EXTRA_JAVA_OPTIONS=-Xmx4g
+#    restart: always
+    ulimits:
+      nproc: 65535
+      nofile:
+        soft: 32000
+        hard: 40000
 
   jenkins:
     build: ./jenkins
+    container_name: jenkins
     ports:
       - "8080:8080"
     networks:
@@ -38,11 +61,14 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - /usr/local/bin/docker:/usr/local/bin/docker
-      - /opt/jenkins/:/var/lib/jenkins/
+      - /volumes/jenkins/:/var/lib/jenkins/
     depends_on:
       - sonarqube
+      - artifactory
     environment:
       - SONARQUBE_SERVER=http://sonarqube:9000
+      - ARTIFACTORY_SERVER=http://artifactory:8081
+
 
 #  nginx:
 #    build: ./nginx
