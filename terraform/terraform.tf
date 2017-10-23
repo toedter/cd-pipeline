@@ -86,8 +86,6 @@ resource "aws_instance" "web" {
       "cd docker",
       "sudo docker-compose build",
       "sudo docker-compose up -d",
-      "sleep 30s",
-      "curl --silent  --user 'admin:password' 'http://192.168.99.100:8081/artifactory/ui/onboarding/createDefaultRepos' -X POST -H 'Content-Type: application/json;charset=UTF-8'  -H 'Accept: application/json, text/plain, */*' --data-binary '{\"repoTypeList\": [\"Maven\"],\"fromOnboarding\": false}'"
     ]
   }
 }

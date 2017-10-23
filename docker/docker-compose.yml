@@ -5,36 +5,38 @@ networks:
     driver: bridge
 
 services:
-  sonarqube:
-    image: sonarqube:latest
-    ports:
-      - "9000:9000"
-      - "5432:5432"
-    networks:
-      - cd-tools-network
-    depends_on:
-      - sonardb
-    environment:
-      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonardb:5432/sonar
-      - SONARQUBE_JDBC_USERNAME=sonar
-      - SONARQUBE_JDBC_PASSWORD=sonar
-
-  sonardb:
-    networks:
-      - cd-tools-network
+  sonarqubedb:
     image: postgres
     container_name: sonarqube-db
+    networks:
+      - cd-tools-network
     environment:
       - POSTGRES_USER=sonar
       - POSTGRES_PASSWORD=sonar
     volumes:
       - /volumes/postgres/data:/var/lib/postgresql/data
 
-  artifactory:
-    image: docker.bintray.io/jfrog/artifactory-oss:latest
+  sonarqube:
+    image: sonarqube:latest
+    container_name: sonarqube
+    command: -Dsonar.web.context=/sonarqube
+    ports:
+      - "9000:9000"
+      - "5432:5432"
     networks:
       - cd-tools-network
+    depends_on:
+      - sonarqubedb
+    environment:
+      - SONARQUBE_JDBC_URL=jdbc:postgresql://sonarqubedb:5432/sonar
+      - SONARQUBE_JDBC_USERNAME=sonar
+      - SONARQUBE_JDBC_PASSWORD=sonar
+
+  artifactory:
+    image: docker.bintray.io/jfrog/artifactory-oss:latest
     container_name: artifactory
+    networks:
+      - cd-tools-network
     ports:
      - 8081:8081
     environment:
@@ -56,6 +58,7 @@ services:
     container_name: jenkins
     ports:
       - "8080:8080"
+    command: --prefix=/jenkins/
     networks:
       - cd-tools-network
     volumes:
@@ -66,18 +69,29 @@ services:
       - sonarqube
       - artifactory
     environment:
-      - SONARQUBE_SERVER=http://sonarqube:9000
+      - SONARQUBE_SERVER=http://sonarqube:9000/sonarqube
       - ARTIFACTORY_SERVER=http://artifactory:8081
 
+  nginx:
+    build: ./nginx
+    container_name: nginx
+    ports:
+      - "443:443"
+    networks:
+      - cd-tools-network
+    depends_on:
+      - jenkins
+      - sonarqube
+      - artifactory
 
-#  nginx:
-#    build: ./nginx
-#    ports:
-#      - "443:443"
-#    networks:
-#      - cd-tools-network
-#    depends_on:
-#      - jenkins
-#      - sonarqube
-
+  runtime:
+    build: ./runtime
+    container_name: runtime
+    networks:
+      - cd-tools-network
+    depends_on:
+      - jenkins
+      - sonarqube
+      - artifactory
+      - nginx
 
