@@ -6,7 +6,7 @@ curl --silent  --user "admin:password" "http://artifactory:8081/artifactory/ui/o
 
 
 serverurl="http://artifactory:8081"
-base_url="https://192.168.99.100/artifactory"
+base_url="https://$(PUBLIC_IP_ADDRESS)/artifactory"
 echo "Set artifactory base url to ${base_url}"
 escaped_base_url=$(echo ${base_url} | sed -e 's/[\/&]/\\&/g')
 
