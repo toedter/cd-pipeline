@@ -90,7 +90,7 @@ services:
     networks:
       - cd-tools-network
     environment:
-      - PUBLIC_IP_ADDRESS=$PUBLIC_IP_ADDRESS
+      - PUBLIC_IP_ADDRESS=${PUBLIC_IP_ADDRESS}
     depends_on:
       - jenkins
       - sonarqube
