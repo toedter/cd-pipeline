@@ -83,7 +83,7 @@ resource "aws_instance" "web" {
       "curl -L https://github.com/docker/compose/releases/download/1.16.1/docker-compose-`uname -s`-`uname -m` > docker-compose",
       "sudo mv docker-compose /usr/local/bin/docker-compose",
       "sudo chmod +x /usr/local/bin/docker-compose",
-      "export PUBLIC_IP_ADDRESS=$(curl http://instance-data/latest/meta-data/public-ipv4)"
+      "export PUBLIC_IP_ADDRESS=$(curl http://instance-data/latest/meta-data/public-ipv4)",
       "cd docker",
       "sudo docker-compose build",
       "sudo docker-compose up -d",
