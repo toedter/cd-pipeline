@@ -1,4 +1,4 @@
-git:3.5.1
-job-dsl:1.65
-workflow-aggregator:2.5
-simple-theme:0.3
+git:latest
+job-dsl:latest
+workflow-aggregator:latest
+simple-theme:latest
