@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-sleep 30
+sleep 60
 echo "initialize artifactory default maven repos"
 curl --silent  --user "admin:password" "http://artifactory:8081/artifactory/ui/onboarding/createDefaultRepos" -X POST -H 'Content-Type: application/json;charset=UTF-8'  -H 'Accept: application/json, text/plain, */*' --data-binary '{"repoTypeList": ["Maven"],"fromOnboarding": false}'
 
