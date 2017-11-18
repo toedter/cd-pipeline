@@ -1,6 +1,23 @@
 #!/usr/bin/env bash
 
-sleep 60
+retries=20
+for i in `seq 1 ${retries}`; do
+    login_http_code=$(curl --silent --output /dev/null --user admin:password  -w "%{http_code}" "http://artifactory:8081/artifactory/webapp/")
+	if [ "${login_http_code}" = "200" ] || [ "${login_http_code}" = "401" ]; then
+		echo "Artifactory is ready"
+		break
+	else
+		if [ ${i} = ${retries} ]; then
+			echo 'All retries used. Artifactory not running?'
+			exit -1
+		else
+			echo "Artifactory is not ready (retry ${i} of ${retries})"
+			sleep 10
+		fi
+	fi
+done
+
+#sleep 60
 echo "initialize artifactory default maven repos"
 curl --silent  --user "admin:password" "http://artifactory:8081/artifactory/ui/onboarding/createDefaultRepos" -X POST -H 'Content-Type: application/json;charset=UTF-8'  -H 'Accept: application/json, text/plain, */*' --data-binary '{"repoTypeList": ["Maven"],"fromOnboarding": false}'
 
