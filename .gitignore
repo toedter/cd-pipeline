@@ -24,9 +24,13 @@ dist/
 nbdist/
 .nb-gradle/
 
+### Terraform ###
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+
 node_modules
 *tfstate*
 *.pem
 *.ppk
-
-.terraform
